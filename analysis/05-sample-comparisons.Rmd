@@ -47,12 +47,12 @@ sce <- readRDS("data/04-marker-detection.rds")
 
 ## Differential expression
 
-### Condition (block on cluster)
+### Condition
 
-Identify genes affected by condition across clusters:
+Identify genes affected by condition:
 
 ```{r}
-res <- pairwiseWilcox(x = logcounts(sce), groups = sce$phenotype, block = sce$cluster)
+res <- pairwiseWilcox(x = logcounts(sce), groups = sce$phenotype)
 
 lab <- paste(res$pairs$first, "vs", res$pairs$second)
 
@@ -102,7 +102,7 @@ for (n in names(sig)) {
 
   cat("#####", n, "\n")
   
-  plotHeatmap(sce, ids, center = TRUE, symmetric = TRUE, colour_columns_by = c("batch", "cluster"), order_columns_by = c("batch", "cluster"), show_colnames = FALSE)
+  plotHeatmap(sce, ids, center = TRUE, symmetric = TRUE, colour_columns_by = "batch", show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -122,7 +122,7 @@ for (n in names(sig)) {
 
   ids <- rownames(dat)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, shape_by = "batch", text_by = "cluster") + ggtitle(x))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, shape_by = "batch") + ggtitle(x))
 
   cat("#####", n, "\n")
 
